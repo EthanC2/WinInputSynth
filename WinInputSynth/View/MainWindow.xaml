@@ -1,0 +1,62 @@
+﻿<Window
+    x:Class="WinInputSynth.View.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinInputSynth"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    mc:Ignorable="d">
+ 
+   <!-- Title Bar -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="AppTitleBar" Height="32">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="LeftPaddingColumn" Width="0"/>
+                <ColumnDefinition x:Name="IconColumn" Width="Auto"/>
+                <ColumnDefinition x:Name="TitleColumn" Width="Auto"/>
+                <ColumnDefinition x:Name="RightPaddingColumn" Width="0"/>
+            </Grid.ColumnDefinitions>
+
+            <FontIcon x:Name="TitleBarIcon"
+                      FontFamily="{StaticResource SymbolThemeFontFamily}"  Glyph="&#xE961;" 
+                      Grid.Column="1" Margin="8,0,0,0"/>
+            <TextBlock x:Name="TitleBarTitle" 
+                       Text="Input Synth | Autoclicker and Autotyper" 
+                       VerticalAlignment="Center"
+                       Margin="8,0,0,0"
+                       Grid.Column="2"/>
+        </Grid>
+
+        <!-- Navigation -->
+        <NavigationView x:Name="MainNavigationMenu" PaneDisplayMode="LeftCompact" IsBackButtonVisible="Collapsed" Grid.Row="1">
+            <NavigationView.MenuItems>
+                <NavigationViewItemSeparator/>
+                <NavigationViewItem Content="Mouse">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"  Glyph="&#xE962;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+
+                <NavigationViewItem Content="Keyboard">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"  Glyph="&#xE92E;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem Content="Mouse and Keyboard">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"  Glyph="&#xE961;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+        </NavigationView>
+    </Grid>
+</Window>

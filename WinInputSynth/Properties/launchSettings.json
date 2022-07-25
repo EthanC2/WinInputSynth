@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WinInputSynth (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "WinInputSynth (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
