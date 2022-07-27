@@ -13,14 +13,17 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-namespace WinInputSynth.View;
+using WinInputSynth.ViewModels;
 
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
-public sealed partial class MousePage : Page
+namespace WinInputSynth.Views;
+
+public sealed partial class SettingsPage : Page
 {
+    public SettingsViewModel ViewModel { get; }
 
+    public SettingsPage(SettingsViewModel viewModel)
+    {
+        ViewModel = viewModel;
+        InitializeComponent();
+    }
 }

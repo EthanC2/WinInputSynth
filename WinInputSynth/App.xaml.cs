@@ -10,17 +10,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.ApplicationModel.Core;
 
-using WinInputSynth.View;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using WinInputSynth.Views;
+using WinInputSynth.Models;
+using WinInputSynth.ViewModels;
+using WinInputSynth.Activation;
+using WinInputSynth.Contracts.Services;
+using WinInputSynth.Services;
+using WinInputSynth.Helpers;
+using WinInputSynth.Core.Contracts.Services;
+using WinInputSynth.Core.Services;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace WinInputSynth;
 
@@ -29,13 +32,50 @@ namespace WinInputSynth;
 /// </summary>
 public partial class App : Application
 {
-    /// <summary>
-    /// Initializes the singleton application object.  This is the first line of authored code
-    /// executed, and as such is the logical equivalent of main() or WinMain().
-    /// </summary>
+    private static readonly IHost _host = Host
+        .CreateDefaultBuilder()
+        .ConfigureServices((context, services) => 
+        {
+            //Default Activation Handler
+            services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
+
+            //Services
+            services.AddSingleton<ILocalSettingsService, LocalSettingsServicePackaged>();
+            services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
+            services.AddSingleton<IActivationService, ActivationService>();
+            services.AddSingleton<IPageService, PageService>(); 
+            services.AddSingleton<INavigationService, NavigationService>();
+
+            //Core Services
+            services.AddSingleton<IFileService, FileService>();
+
+            //Views and ViewModels
+            services.AddTransient<ShellViewModel>();
+            services.AddTransient<ShellPage>();
+            services.AddTransient<MouseViewModel>();
+            services.AddTransient<MousePage>();
+            services.AddTransient<KeyboardViewModel>();
+            services.AddTransient<KeyboardPage>();
+            services.AddTransient<MouseAndKeyboardViewModel>();
+            services.AddTransient<MouseAndKeyboardPage>();
+            services.AddTransient<SettingsViewModel>();
+            services.AddTransient<SettingsPage>();
+
+            //Configuration
+            services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
+        }).Build();
+
+    public static T GetService<T>() where T : class
+    {
+        return _host.Services.GetService(typeof(T)) as T;
+    }
+
+
+    public static Window MainWindow { get; set; } = new Window();
+
     public App()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     /// <summary>
@@ -43,11 +83,10 @@ public partial class App : Application
     /// will be used such as when the application is launched to open a specific file.
     /// </summary>
     /// <param name="args">Details about the launch request and process.</param>
-    protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+    protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
-        m_window = new MainWindow();
-        m_window.Activate();
+        base.OnLaunched(args);
+        var activationService = GetService<IActivationService>();
+        await activationService.ActivateAsync(args);
     }
-
-    internal Window m_window;
 }

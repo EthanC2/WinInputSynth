@@ -13,15 +13,23 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
+using WinInputSynth.ViewModels;
+
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace WinInputSynth.View;
+namespace WinInputSynth.Views;
 
 /// <summary>
 /// An empty page that can be used on its own or navigated to within a Frame.
 /// </summary>
-public sealed partial class SettingsPage : Page
+public sealed partial class KeyboardPage : Page
 {
+    public KeyboardViewModel ViewModel { get; }
 
+    public KeyboardPage(KeyboardViewModel viewModel)
+    {
+        ViewModel = viewModel;
+        InitializeComponent();
+    }
 }
